@@ -17,6 +17,8 @@ RestartSec=3
 WantedBy=multi-user.target
 EOF
 
+sudo mdir myapp
+
 sudo systemctl daemon-reload
 
 sudo systemctl enable myapp
