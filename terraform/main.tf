@@ -5,7 +5,7 @@ resource "digitalocean_vpc" "vpc_golang" {
     ip_range = "10.20.20.0/24"
 }
 
-# Create SSH key
+# Create SSH key - michel
 resource "digitalocean_ssh_key" "ssh_key_golang" {
   name       = "ssh-key-golang"
   public_key = file(var.ssh_key_path)
