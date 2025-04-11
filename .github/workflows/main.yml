@@ -23,7 +23,7 @@ jobs:
       run: go mod verify
     
     - name: Build
-      run: go build -v -o myapp -ldflags="-s -w" ./...
+      run: go build -v -o myapp -ldflags="-s -w" ./
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
