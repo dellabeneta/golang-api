@@ -21,8 +21,19 @@ resource "digitalocean_droplet" "droplet_golang" {
     ssh_keys = [digitalocean_ssh_key.ssh_key_golang.fingerprint]
 
     provisioner "file" {
-      source      = "scripts/" 
-      destination = "/tmp/scripts/"
+      source      = "mongo.sh" 
+      destination = "/tmp/mongo.sh"
+      connection {
+        type        = "ssh"
+        user        = "root"
+        private_key = file("~/.ssh/id_ed25519")
+        host        = self.ipv4_address
+      }
+    }
+
+    provisioner "file" {
+      source      = "myapp.sh" 
+      destination = "/tmp/myapp.sh"
       connection {
         type        = "ssh"
         user        = "root"
@@ -33,10 +44,21 @@ resource "digitalocean_droplet" "droplet_golang" {
 
     provisioner "remote-exec" {
       inline = [
-        "chmod +x /tmp/scripts/mongo.sh",
-        "/tmp/scripts/mongo.sh",
-        "chmod +x /tmp/scripts/myapp.sh",
-        "/tmp/scripts/myapp.sh"
+        "chmod +x /tmp/mongo.sh",
+        "bash /tmp/mongo.sh"
+      ]
+      connection {
+        type        = "ssh"
+        user        = "root"
+        private_key = file("~/.ssh/id_ed25519")
+        host        = self.ipv4_address
+      }
+    }
+
+    provisioner "remote-exec" {
+      inline = [
+        "chmod +x /tmp/myapp.sh",
+        "bash /tmp/myapp.sh"
       ]
       connection {
         type        = "ssh"
