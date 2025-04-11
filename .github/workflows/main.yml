@@ -5,8 +5,12 @@ name: Go API CI/CD Pipeline
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'terraform/**'
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - 'terraform/**'
 
 jobs:
   build:
