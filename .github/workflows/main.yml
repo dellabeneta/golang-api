@@ -1,70 +1,66 @@
-
-
+---
 name: Go API CI/CD Pipeline
-
-
 on:
-  workflow_dispatch:
-
+  workflow_dispatch: null
   push:
-    branches: [ main ]
+    branches:
+      - main
     paths-ignore:
-      - 'terraform/**'
+      - terraform/**
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
     paths-ignore:
-      - 'terraform/**'
-
+      - terraform/**
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.24'
-    
-    - name: Verify dependencies
-      run: go mod verify
-    
-    - name: Build
-      run: go build -v -o myapp -ldflags="-s -w" ./
-    
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: myapp-binary
-        path: myapp
-
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+      - name: Verify dependencies
+        run: go mod verify
+      - name: Build
+        run: go build -v -o myapp -ldflags="-s -w" ./
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myapp-binary
+          path: myapp
   deploy:
     runs-on: ubuntu-latest
     needs: build
     strategy:
       matrix:
         server:
-          - { name: "server-1", host: "${{ secrets.SERVER_HOST_1 }}" }
-          - { name: "server-2", host: "${{ secrets.SERVER_HOST_2 }}" }
+          - name: server-1
+            host: ${{ secrets.SERVER_HOST_1 }}
+          - name: server-2
+            host: ${{ secrets.SERVER_HOST_2 }}
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: myapp-binary
           path: ./
-      
       - name: Set executable permissions
         run: chmod +x myapp
-      
       - name: Deploy to ${{ matrix.server.name }}
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_HOST: ${{ matrix.server.host }}
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
-        run: |
+        run: >
           echo "$SSH_PRIVATE_KEY" > private_key
+
           chmod 600 private_key
+
           scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+
           ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl restart myapp.service"
+
           rm -f private_key
