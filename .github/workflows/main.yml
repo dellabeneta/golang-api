@@ -51,14 +51,26 @@ jobs:
     - name: Set executable permissions
       run: chmod +x myapp
     
-    - name: Deploy to server
+    - name: Deploy to server 1
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         SERVER_USER: ${{ secrets.SERVER_USER }}
-        SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        SERVER_HOST: ${{ secrets.SERVER_HOST_1 }}
         SERVER_PATH: ${{ secrets.SERVER_PATH }}
       run: |
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
-        scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
-        ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl restart myapp.service"
+        scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST_1:$SERVER_PATH
+        ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST_1 "sudo systemctl restart myapp.service"
+
+    - name: Deploy to server 2
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_HOST: ${{ secrets.SERVER_HOST_2 }}
+        SERVER_PATH: ${{ secrets.SERVER_PATH }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key
+        chmod 600 private_key
+        scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST_2:$SERVER_PATH
+        ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST_2 "sudo systemctl restart myapp.service"
