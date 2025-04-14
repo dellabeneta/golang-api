@@ -12,7 +12,7 @@ import (
 
 func ConnectDB() *mongo.Client {
 	// Configuração do cliente MongoDB
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://10.0.20.4:27017")
 	
 	// Contexto com timeout para a conexão
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
