@@ -20,5 +20,5 @@ output "mongodb_droplet_pip" {
 }
 
 output "loadbalancer_pip" {
-  value = digitalocean_loadbalancer.loadbalancer.ip 
+  value = digitalocean_loadbalancer.loadbalancer.ip
 }
