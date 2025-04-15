@@ -1,54 +1,66 @@
 
-### Backend (Go API)
-- **Main Components**:
-  - REST API using Gorilla Mux router
-  - MongoDB integration
-  - Person management endpoints (Create and Get by CPF)
+### Backend (API em Go)
+- **Componentes Principais**:
+  - API REST usando o roteador Gorilla Mux
+  - Integração com MongoDB
+  - Endpoints para gerenciamento de Pessoas (Criar e Buscar por CPF)
 
-### Infrastructure (Terraform)
-- **DigitalOcean Resources**:
-  - VPC network
-  - Droplet (Ubuntu 24.04)
-  - SSH key management
-  - MongoDB installation
-  - Application deployment setup
+### Infraestrutura (Terraform)
+- **Recursos DigitalOcean**:
+  - Balanceador de Carga
+  - Rede VPC
+  - Droplets (Ubuntu 24.04)
+  - Gerenciamento de chaves SSH
+  - Instalação do MongoDB
+  - Configuração de implantação da aplicação
 
 ### CI/CD
-- **GitHub Actions Pipeline**:
-  - Builds Go application
-  - Deploys to server
-  - Handles artifacts
+- **Pipeline GitHub Actions**:
+  - Compila a aplicação Go
+  - Implanta no servidor
+  - Gerencia artefatos
 
-### Docker Setup
-- Docker Compose configuration with:
-  - Go application container
-  - MongoDB container
-  - Volume persistence
+<!-- ### Configuração Docker
+- Configuração do Docker Compose com:
+  - Container da aplicação Go
+  - Container MongoDB
+  - Persistência de volume -->
 
-### Project Structure
+  ### Diagrama da Arquitetura
+  ![Diagrama da Arquitetura](./diagram.png)
+
+### Estrutura do Projeto
 ```
-golang-api/
-├── configs/
-│   └── db.go                 # MongoDB configuration
-├── controllers/
-│   └── personController.go   # API endpoints logic
-├── models/
-│   └── person.go            # Data models
-├── routes/
-│   └── router.go            # API routes
-├── terraform/
-│   ├── main.tf              # Main infrastructure
-│   ├── provider.tf          # Provider configuration
-│   ├── backend.tf           # S3 backend setup
-│   ├── output.tf            # Infrastructure outputs
-│   ├── mongo.sh            # MongoDB setup script
-│   └── myapp.sh            # Application setup script
-├── Dockerfile
 ├── compose.yaml
-├── main.go                  # Application entry point
-└── go.mod                   # Go dependencies
+├── configs
+│   └── db.go
+├── controllers
+│   └── personController.go
+├── diagram.png
+├── Dockerfile
+├── go.mod
+├── go.sum
+├── main.go
+├── models
+│   └── person.go
+├── nuke.sh
+├── README.md
+├── routes
+│   └── router.go
+└── terraform
+    ├── backend.tf
+    ├── droplets.tf
+    ├── loadbalancer.tf
+    ├── mongo.sh
+    ├── myapp.sh
+    ├── network.tf
+    ├── output.tf
+    ├── provider.tf
+    ├── sshkey.tf
+    ├── terraform.tfvars
+    └── variables.tf
 ```
 
-The API has two main endpoints:
-1. `POST /api/pessoas` - Create a new person
-2. `GET /api/pessoas/{cpf}` - Get person by CPF
+A API possui dois endpoints principais:
+1. `POST /api/pessoas` - Criar uma nova pessoa
+2. `GET /api/pessoas/{cpf}` - Buscar pessoa por CPF
