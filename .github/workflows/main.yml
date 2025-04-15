@@ -58,8 +58,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_HOST: ${{ matrix.server == 1 && secrets.SERVER_HOST_1 ||
-            secrets.SERVER_HOST_2 }}
+          SERVER_HOST: ${{ matrix.server == 1 && secrets.SERVER_HOST_1 || secrets.SERVER_HOST_2 }}
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
         run: >
           echo "$SSH_PRIVATE_KEY" > private_key
