@@ -1,17 +1,24 @@
 
 name: Go API CI/CD Pipeline
 on:
-  workflow_dispatch: null
+  workflow_dispatch: {}
   push:
     branches:
       - main
-    paths-ignore:
-      - terraform/**
+    paths:
+      - configs/**
+      - controllers/**
+      - models/**
+      - routes/**
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - terraform/**
+    paths:
+      - configs/**
+      - controllers/**
+      - models/**
+      - routes/**
+
 jobs:
   build:
     runs-on: ubuntu-latest
