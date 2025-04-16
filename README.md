@@ -27,7 +27,7 @@
   - Persistência de volume -->
 
   ### Diagrama da Arquitetura
-  ![Diagrama da Arquitetura](./diagram.png)
+  ![Diagrama da Arquitetura](./diagramas/2025-04-02-1618.excalidraw.png)
 
 ### Estrutura do Projeto
 ```
