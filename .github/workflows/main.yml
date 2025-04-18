@@ -63,13 +63,13 @@ jobs:
         run: >
           echo "$SSH_PRIVATE_KEY" > private_key
 
-          chmod 600 private_key
+                chmod 600 private_key
 
-          cd /opt/myapp && rm myapp
+                ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "rm -f $SERVER_PATH/myapp"
 
-          scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+                scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
 
-          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl restart myapp.service"
+                ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl restart myapp.service"
 
-          rm -f private_key
+                rm -f private_key
 
