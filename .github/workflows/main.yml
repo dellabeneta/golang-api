@@ -63,7 +63,7 @@ jobs:
 
         run: |
 
-          ssh $SERVER_USER@$SERVER_HOST 'echo "michel" > /tmp/michel.txt'
+          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST 'echo "michel" > /tmp/michel.txt'
 
           
         
