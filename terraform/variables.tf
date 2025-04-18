@@ -20,7 +20,7 @@ variable "droplet_mongo_size" {
 }
 
 variable "droplet_gha_size" {
-  default = "s-1vcpu-512mb-10gb"
+  default = "s-2vcpu-2gb"
 }
 
 variable "droplet_image" {
