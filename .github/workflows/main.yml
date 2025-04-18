@@ -71,5 +71,5 @@ jobs:
 
                 ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl restart myapp.service"
 
-                # rm -f private_key
+              
 
