@@ -65,7 +65,7 @@ jobs:
 
           chmod 600 private_key
 
-          # cd /opt/myapp && rm myapp
+          cd /opt/myapp && rm myapp
 
           scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
 
