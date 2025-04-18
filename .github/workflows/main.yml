@@ -63,19 +63,7 @@ jobs:
 
         run: |
 
-          # Install SSH client
-          sudo apt-get update
-          sudo apt-get install -y openssh-client
-
-          # Add SSH key to the agent
-          eval $(ssh-agent -s)
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-
-          # Copy the binary to the server
           scp -o StrictHostKeyChecking=no myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
-
-          # Restart the service on the server
-          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST "sudo systemctl restart myapp.service"
         
           
    
