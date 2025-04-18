@@ -66,16 +66,16 @@ jobs:
           # Parar o serviço antes de copiar o binário
           ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl stop myapp.service"
           
-          # Remover o binário antigo ou ajustar permissões
-          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo rm -f $SERVER_PATH/myapp || sudo chmod 664 $SERVER_PATH/myapp"
+          # # Remover o binário antigo ou ajustar permissões
+          # ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo rm -f $SERVER_PATH/myapp || sudo chmod 664 $SERVER_PATH/myapp"
           
-          # Copiar o novo binário
-          scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+          # # Copiar o novo binário
+          # scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
           
-          # Ajustar permissões e reiniciar o serviço
-          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo chmod +x $SERVER_PATH/myapp && sudo systemctl start myapp.service"
+          # # Ajustar permissões e reiniciar o serviço
+          # ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo chmod +x $SERVER_PATH/myapp && sudo systemctl start myapp.service"
           
-          rm private_key
+          # rm private_key
 
               
 
