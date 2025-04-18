@@ -63,7 +63,7 @@ jobs:
 
         run: |
 
-          scp -o StrictHostKeyChecking=no myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+          scp myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
         
           
    
