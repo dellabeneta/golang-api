@@ -62,12 +62,12 @@ jobs:
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
           SERVICE_NAME: ${{ secrets.SERVICE_NAME }}
         run: >
-          echo "$SSH_PRIVATE_KEY" > private_key
+          #echo "$SSH_PRIVATE_KEY" > private_key
 
-          chmod 600 private_key
+          #chmod 600 private_key
           
-          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "rm $SERVER_PATH"
+          ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY $SERVER_USER@$SERVER_HOST "rm $SERVER_PATH"
 
-          scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+          scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
 
-          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl restart $SERVICE_NAME"
+          ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY $SERVER_USER@$SERVER_HOST "sudo systemctl restart $SERVICE_NAME"
