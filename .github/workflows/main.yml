@@ -60,16 +60,19 @@ jobs:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_HOST: ${{ matrix.server == 1 && secrets.SERVER_HOST_1 || secrets.SERVER_HOST_2 }}
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
-        run: >
+        run: |
           echo "$SSH_PRIVATE_KEY" > private_key
-
-                chmod 600 private_key
-
-                ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "rm /opt/myapp/myapp"
-
-                scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
-
-                ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl restart myapp.service"
-
-                rm -f private_key
+          chmod 600 private_key
+          
+          # First stop the service
+          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl stop myapp.service"
+          
+          # Force remove old binary and copy new one
+          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo rm -f $SERVER_PATH/myapp"
+          scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+          
+          # Set proper permissions and restart service
+          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo chmod +x $SERVER_PATH/myapp && sudo systemctl start myapp.service"
+          
+          rm -f private_key
 
