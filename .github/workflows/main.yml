@@ -67,6 +67,8 @@ jobs:
 
           #ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "rm /opt/myapp/myapp"
 
+          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "rm $SERVER_PATH"
+
           scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
 
           ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl restart myapp.service"
