@@ -51,12 +51,10 @@ jobs:
         run: chmod +x myapp
       - name: Deploy to server-1
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_HOST: ${{ secrets.SERVER_HOST_1 }}
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
         run: |     
-          echo "$SSH_PRIVATE_KEY" > private_key
-          chmod 600 private_key
-          scp myapp -i private_key $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+          
+          scp myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
           
