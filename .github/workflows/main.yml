@@ -63,7 +63,9 @@ jobs:
 
         run: |
 
-          scp myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+          ssh $SERVER_USER@$SERVER_HOST 'echo "michel" > /tmp/michel.txt'
+
+          
         
           
    
