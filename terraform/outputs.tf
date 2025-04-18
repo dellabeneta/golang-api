@@ -1,4 +1,12 @@
 
+output "gha_droplet_ip" {
+  value = digitalocean_droplet.gha.ipv4_address_private
+}
+
+output "gha_droplet_pip" {
+  value = digitalocean_droplet.gha.ipv4_address
+}
+
 output "apps_droplet_ips" {
   value = {
     for name, droplet in digitalocean_droplet.app : name => droplet.ipv4_address_private
