@@ -41,11 +41,6 @@ jobs:
   deploy:
     runs-on: self-hosted
     needs: build
-    strategy:
-      matrix:
-        server:
-          - 1
-          - 2
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -54,21 +49,12 @@ jobs:
           path: ./
       - name: Set executable permissions
         run: chmod +x myapp
-      - name: Deploy to server-${{ matrix.server }}
+      - name: Deploy to server-1
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_HOST: ${{ matrix.server == 1 && secrets.SERVER_HOST_1 || secrets.SERVER_HOST_2 }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST_1 }}
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
-
-        run: |
-
-          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST 'echo "michel" > /tmp/michel.txt'
-
+        run: |     
+          scp myapp -i $SSH_PRIVATE_KEY" $SERVER_USER@$SERVER_HOST:$SERVER_PATH
           
-        
-          
-   
-
-              
-
