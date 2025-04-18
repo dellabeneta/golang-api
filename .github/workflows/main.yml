@@ -61,18 +61,31 @@ jobs:
           SERVER_HOST: ${{ matrix.server == 1 && secrets.SERVER_HOST_1 || secrets.SERVER_HOST_2 }}
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
         run: |
-          echo "$SSH_PRIVATE_KEY" > private_key
-          chmod 600 private_key
+          # Create temporary directory
+          TEMP_DIR=$(mktemp -d)
+          echo "$SSH_PRIVATE_KEY" > "$TEMP_DIR/private_key"
+          chmod 600 "$TEMP_DIR/private_key"
           
-          # First stop the service
-          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo systemctl stop myapp.service"
+          # First create a backup of the existing binary
+          ssh -o StrictHostKeyChecking=no -i "$TEMP_DIR/private_key" $SERVER_USER@$SERVER_HOST << 'EOF'
+            sudo systemctl stop myapp.service || true
+            if [ -f "$SERVER_PATH/myapp" ]; then
+              sudo mv "$SERVER_PATH/myapp" "$SERVER_PATH/myapp.bak"
+            fi
+          EOF
           
-          # Force remove old binary and copy new one
-          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo rm -f $SERVER_PATH/myapp"
-          scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+          # Copy new binary using rsync for better reliability
+          rsync -avz -e "ssh -i $TEMP_DIR/private_key -o StrictHostKeyChecking=no" \
+            myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH/myapp.new
           
-          # Set proper permissions and restart service
-          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "sudo chmod +x $SERVER_PATH/myapp && sudo systemctl start myapp.service"
+          # Move new binary into place and set permissions
+          ssh -o StrictHostKeyChecking=no -i "$TEMP_DIR/private_key" $SERVER_USER@$SERVER_HOST << 'EOF'
+            sudo mv "$SERVER_PATH/myapp.new" "$SERVER_PATH/myapp"
+            sudo chown root:root "$SERVER_PATH/myapp"
+            sudo chmod +x "$SERVER_PATH/myapp"
+            sudo systemctl start myapp.service
+          EOF
           
-          rm -f private_key
+          # Cleanup
+          rm -rf "$TEMP_DIR"
 
