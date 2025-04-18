@@ -56,5 +56,5 @@ jobs:
           SERVER_HOST: ${{ secrets.SERVER_HOST_1 }}
           SERVER_PATH: ${{ secrets.SERVER_PATH }}
         run: |     
-          scp myapp -i $SSH_PRIVATE_KEY" $SERVER_USER@$SERVER_HOST:$SERVER_PATH
+          scp myapp -i $SSH_PRIVATE_KEY $SERVER_USER@$SERVER_HOST:$SERVER_PATH
           
