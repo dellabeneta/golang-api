@@ -30,3 +30,7 @@ output "mongodb_droplet_pip" {
 output "loadbalancer_pip" {
   value = digitalocean_loadbalancer.loadbalancer.ip
 }
+
+output "dns_name" {
+  value = digitalocean_record.a_record.fqdn   
+}
