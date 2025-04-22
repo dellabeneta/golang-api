@@ -66,7 +66,7 @@ jobs:
 
           chmod 600 private_key
           
-          # ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "rm -rf $SERVER_PATH"
+          ssh -o StrictHostKeyChecking=no -i private_key $SERVER_USER@$SERVER_HOST "rm -rf $SERVER_PATH"
 
           scp -o StrictHostKeyChecking=no -i private_key myapp $SERVER_USER@$SERVER_HOST:$SERVER_PATH
 
