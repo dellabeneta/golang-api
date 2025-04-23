@@ -10,7 +10,7 @@
   - Balanceador de Carga
   - Rede VPC
   - Droplets (Ubuntu 24.04)
-  - Gerenciamento de chaves SSH
+  - Um Droplet para Self-runner
   - Instalação do MongoDB
   - Configuração de implantação da aplicação
 
@@ -33,32 +33,44 @@
 ```
 ├── compose.yaml
 ├── configs
-│   └── db.go
+│   └── db.go
 ├── controllers
-│   └── personController.go
-├── diagram.png
+│   └── personController.go
+├── diagramas
+│   ├── 2025-04-02-1618.excalidraw
+│   └── 2025-04-02-1618.excalidraw.png
 ├── Dockerfile
 ├── go.mod
 ├── go.sum
 ├── main.go
 ├── models
-│   └── person.go
+│   └── person.go
 ├── nuke.sh
 ├── README.md
 ├── routes
-│   └── router.go
+│   └── router.go
 └── terraform
     ├── backend.tf
-    ├── droplets.tf
+    ├── dns_record.tf
+    ├── droplet_app.tf
+    ├── droplet_gha.tf
+    ├── droplet_mongo.tf
+    ├── firewall_app.tf
+    ├── firewall_gha.tf
+    ├── firewall_mongo.tf
+    ├── gha.sh
     ├── loadbalancer.tf
+    ├── locals.tf
     ├── mongo.sh
     ├── myapp.sh
     ├── network.tf
-    ├── output.tf
+    ├── outputs.tf
     ├── provider.tf
-    ├── sshkey.tf
+    ├── ssh_key.tf
     ├── terraform.tfvars
     └── variables.tf
+
+7 directories, 32 files
 ```
 
 A API possui dois endpoints principais:
