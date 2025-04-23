@@ -32,5 +32,5 @@ output "loadbalancer_pip" {
 }
 
 output "dns_name" {
-  value = digitalocean_record.a_record.fqdn   
+  value = digitalocean_record.a_record.fqdn
 }

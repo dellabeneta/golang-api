@@ -7,7 +7,7 @@ resource "digitalocean_droplet" "gha" {
   vpc_uuid = digitalocean_vpc.vpc.id
   ssh_keys = [digitalocean_ssh_key.ssh_key.fingerprint]
 
-    provisioner "file" {
+  provisioner "file" {
     source      = "gha.sh"
     destination = "/tmp/gha.sh"
     connection {
