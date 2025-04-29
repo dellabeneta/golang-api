@@ -10,7 +10,7 @@
     ],
     "value": {
       "app-1": "10.0.20.3",
-      "app-2": "10.0.20.4"
+      "app-2": "10.0.20.5"
     }
   },
   "apps_droplets_pips": {
@@ -23,8 +23,8 @@
       }
     ],
     "value": {
-      "app-1": "167.172.119.93",
-      "app-2": "138.197.210.67"
+      "app-1": "165.227.6.179",
+      "app-2": "142.93.25.26"
     }
   },
   "dns_name": {
@@ -35,26 +35,26 @@
   "gha_droplet_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "10.0.20.5"
+    "value": "10.0.20.2"
   },
   "gha_droplet_pip": {
     "sensitive": false,
     "type": "string",
-    "value": "157.245.239.45"
+    "value": "178.128.9.18"
   },
   "loadbalancer_pip": {
     "sensitive": false,
     "type": "string",
-    "value": "157.230.72.225"
+    "value": "138.197.236.250"
   },
   "mongodb_droplet_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "10.0.20.2"
+    "value": "10.0.20.4"
   },
   "mongodb_droplet_pip": {
     "sensitive": false,
     "type": "string",
-    "value": "206.189.74.242"
+    "value": "138.197.213.193"
   }
 }

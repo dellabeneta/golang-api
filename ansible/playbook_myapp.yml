@@ -1,3 +1,4 @@
+---
 - name: Cria serviço myapp nas apps
   hosts: apps
   become: yes
@@ -17,6 +18,12 @@
 
           [Install]
           WantedBy=multi-user.target
+
+    - name: Cria diretório /opt/myapp/ com permissões de execução e leitura para todos
+      file:
+        path: /opt/myapp
+        mode: '0755'
+        state: directory
 
     - name: Ativa e inicia o serviço
       systemd:
