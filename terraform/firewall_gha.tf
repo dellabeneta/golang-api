@@ -7,18 +7,18 @@ resource "digitalocean_firewall" "firewall_gha" {
   inbound_rule {
     protocol         = "tcp"
     port_range       = "1-65535"
-    source_addresses = ["170.247.104.231/32"]
+    source_addresses = ["10.0.20.0/24", "170.247.104.202/32"]
   }
 
   inbound_rule {
     protocol         = "udp"
     port_range       = "1-65535"
-    source_addresses = ["170.247.104.231/32"]
+    source_addresses = ["10.0.20.0/24", "170.247.104.202/32"]
   }
 
   inbound_rule {
     protocol         = "icmp"
-    source_addresses = ["170.247.104.231/32"]
+    source_addresses = ["10.0.20.0/24", "170.247.104.202/32"]
   }
 
   outbound_rule {

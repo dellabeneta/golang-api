@@ -1,0 +1,52 @@
+- name: Instala e configura MongoDB 8.0 no Ubuntu
+  hosts: mongodb
+  become: yes
+  tasks:
+    - name: Instala dependências gnupg e curl
+      apt:
+        name:
+          - gnupg
+          - curl
+        state: present
+
+    - name: Baixa e converte a chave GPG do MongoDB
+      shell: curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg --dearmor
+      args:
+        creates: /usr/share/keyrings/mongodb-server-8.0.gpg
+
+    - name: Adiciona o repositório do MongoDB
+      copy:
+        content: "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse"
+        dest: /etc/apt/sources.list.d/mongodb-org-8.0.list
+
+    - name: Atualiza o cache do apt
+      apt:
+        update_cache: yes
+
+    - name: Instala o MongoDB
+      apt:
+        name: mongodb-org
+        state: present
+
+    - name: Faz backup do arquivo de configuração mongod.conf
+      copy:
+        src: /etc/mongod.conf
+        dest: /etc/mongod.conf.bak
+        remote_src: yes
+
+    - name: Modifica bindIp para 0.0.0.0 no mongod.conf
+      lineinfile:
+        path: /etc/mongod.conf
+        regexp: '^  bindIp: 127\.0\.0\.1$'
+        line: '  bindIp: 0.0.0.0'
+        backrefs: yes
+
+    - name: Habilita o serviço mongod
+      service:
+        name: mongod
+        enabled: yes
+
+    - name: Inicia o serviço mongod
+      service:
+        name: mongod
+        state: started

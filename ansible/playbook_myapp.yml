@@ -1,0 +1,25 @@
+- name: Cria serviço myapp nas apps
+  hosts: apps
+  become: yes
+  tasks:
+    - name: Cria arquivo de serviço systemd
+      copy:
+        dest: /etc/systemd/system/myapp.service
+        content: |
+          [Unit]
+          Description=MyApp Custom Service
+          After=network.target
+
+          [Service]
+          Type=simple
+          ExecStart=/opt/myapp/myapp
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Ativa e inicia o serviço
+      systemd:
+        name: myapp
+        enabled: yes
+        state: started

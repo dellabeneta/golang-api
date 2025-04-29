@@ -1,0 +1,60 @@
+{
+  "apps_droplet_ips": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "app-1": "string",
+        "app-2": "string"
+      }
+    ],
+    "value": {
+      "app-1": "10.0.20.3",
+      "app-2": "10.0.20.4"
+    }
+  },
+  "apps_droplets_pips": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "app-1": "string",
+        "app-2": "string"
+      }
+    ],
+    "value": {
+      "app-1": "167.172.119.93",
+      "app-2": "138.197.210.67"
+    }
+  },
+  "dns_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "api.dellabeneta.tech"
+  },
+  "gha_droplet_ip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "10.0.20.5"
+  },
+  "gha_droplet_pip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "157.245.239.45"
+  },
+  "loadbalancer_pip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "157.230.72.225"
+  },
+  "mongodb_droplet_ip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "10.0.20.2"
+  },
+  "mongodb_droplet_pip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "206.189.74.242"
+  }
+}
