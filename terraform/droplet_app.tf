@@ -1,8 +1,7 @@
 
 resource "digitalocean_droplet" "app" {
-  for_each = local.droplets
-
-  name     = each.key
+  count = 2
+  name     = "app-${count.index + 1}"
   size     = var.droplet_app_size
   image    = var.droplet_image
   region   = var.droplet_region

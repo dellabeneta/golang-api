@@ -4,13 +4,13 @@
     "type": [
       "object",
       {
-        "app-1": "string",
-        "app-2": "string"
+        "0": "string",
+        "1": "string"
       }
     ],
     "value": {
-      "app-1": "10.0.20.3",
-      "app-2": "10.0.20.5"
+      "0": "10.0.20.2",
+      "1": "10.0.20.5"
     }
   },
   "apps_droplets_pips": {
@@ -18,13 +18,13 @@
     "type": [
       "object",
       {
-        "app-1": "string",
-        "app-2": "string"
+        "0": "string",
+        "1": "string"
       }
     ],
     "value": {
-      "app-1": "165.227.6.179",
-      "app-2": "142.93.25.26"
+      "0": "142.93.82.27",
+      "1": "206.189.68.72"
     }
   },
   "dns_name": {
@@ -35,17 +35,17 @@
   "gha_droplet_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "10.0.20.2"
+    "value": "10.0.20.3"
   },
   "gha_droplet_pip": {
     "sensitive": false,
     "type": "string",
-    "value": "178.128.9.18"
+    "value": "157.245.178.11"
   },
   "loadbalancer_pip": {
     "sensitive": false,
     "type": "string",
-    "value": "138.197.236.250"
+    "value": "159.89.222.44"
   },
   "mongodb_droplet_ip": {
     "sensitive": false,
@@ -55,6 +55,6 @@
   "mongodb_droplet_pip": {
     "sensitive": false,
     "type": "string",
-    "value": "138.197.213.193"
+    "value": "64.227.87.37"
   }
 }

@@ -3,8 +3,8 @@
 
 GHA_IP=$(jq -r .gha_droplet_pip.value tf_outputs.json)
 MONGO_IP=$(jq -r '.mongodb_droplet_pip.value' tf_outputs.json)
-APP1_IP=$(jq -r '.apps_droplets_pips.value["app-1"]' tf_outputs.json)
-APP2_IP=$(jq -r '.apps_droplets_pips.value["app-2"]' tf_outputs.json)
+APP1_IP=$(jq -r '.apps_droplets_pips.value["0"]' tf_outputs.json)
+APP2_IP=$(jq -r '.apps_droplets_pips.value["1"]' tf_outputs.json)
 
 cat <<EOF > inventory.ini
 [gha]

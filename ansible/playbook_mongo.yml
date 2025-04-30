@@ -1,3 +1,4 @@
+---
 - name: Instala e configura MongoDB 8.0 no Ubuntu
   hosts: mongodb
   become: yes
