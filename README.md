@@ -1,126 +1,131 @@
+### Visão Geral
 
-# API Go com MongoDB e Infraestrutura DigitalOcean
+Este projeto é uma API RESTful escrita em Go para cadastro e consulta de pessoas, utilizando MongoDB como banco de dados. O deploy é automatizado com Docker, Terraform, Ansible e GitHub Actions, visando provisionamento de infraestrutura na DigitalOcean e entrega contínua.
 
-Uma API REST pronta para produção construída com Go, usando MongoDB como banco de dados e implantada na infraestrutura da DigitalOcean utilizando Terraform e GitHub Actions.
+---
 
-## Visão Geral da Arquitetura
+### Estrutura do Projeto
 
-![Diagrama](./diagramas/2025-04-02-1618.excalidraw.png)
+```
+├── main.go                # Ponto de entrada da aplicação Go
+├── configs/               # Configuração de conexão com MongoDB
+├── controllers/           # Lógica dos endpoints da API
+├── models/                # Definição dos modelos de dados
+├── routes/                # Definição das rotas HTTP
+├── Dockerfile             # Build da aplicação em container
+├── compose.yaml           # Orquestração local com Docker Compose
+├── terraform/             # Infraestrutura como código (DigitalOcean)
+├── ansible/               # Playbooks para configuração de servidores
+├── .github/workflows/     # Pipeline CI/CD com GitHub Actions
+```
 
-## Funcionalidades
 
-### Endpoints da API
-- `POST /api/pessoas` - Cria uma nova pessoa
-- `GET /api/pessoas/{cpf}` - Busca pessoa pelo CPF
+### Funcionalidades
 
-### Stack Técnica
-- **Backend**: Go 1.24
-  - Gorilla Mux para roteamento
-  - Driver MongoDB para Go
-  - Log estruturado
-  - Middleware de tratamento de erros
+- **Cadastro de Pessoa:**  
+  `POST /api/pessoas`  
+  Cria um novo cadastro de pessoa (nome, sobrenome, email, CPF).
 
-- **Banco de Dados**: MongoDB 8.0
-  - Armazenamento orientado a documentos
-  - Configuração de alta disponibilidade
-  - Persistência de dados
+- **Consulta por CPF:**  
+  `GET /api/pessoas/{cpf}`  
+  Busca uma pessoa cadastrada pelo CPF.
+
+
+### Stack Tecnológica
+
+- **Backend:** Go 1.24, [mux](https://github.com/gorilla/mux)
+- **Banco de Dados:** MongoDB 8
+- **Infraestrutura:** DigitalOcean (Droplets, VPC, Load Balancer, DNS, Firewalls)
+- **Provisionamento:** Terraform, Ansible
+- **CI/CD:** GitHub Actions (build, deploy automatizado)
+- **Containerização:** Docker, Docker Compose
+
+
+### Como Executar Localmente
+
+1. **Pré-requisitos:**  
+   - Docker e Docker Compose instalados
+
+2. **Subir a stack local:**  
+   ```sh
+   docker compose up --build
+   ```
+   A API estará disponível em `http://localhost:8080`.
+
+
+### Deploy em Produção
+
+1. **Provisionamento da Infraestrutura:**  
+   - Configure variáveis no Terraform (variables.tf)
+   - Execute:
+     ```sh
+     cd terraform
+     terraform init
+     terraform apply
+     ```
+   - Os IPs e domínios serão exportados em tf_outputs.json.
+
+2. **Configuração dos Servidores:**  
+   - Gere o inventário:
+     ```sh
+     cd ansible
+     ./script.sh
+     ```
+   - Execute os playbooks:
+     ```sh
+     ansible-playbook -i inventory.ini playbook_mongo.yml
+     ansible-playbook -i inventory.ini playbook_myapp.yml
+     ```
+
+3. **Deploy da Aplicação:**  
+   - O deploy é feito automaticamente via GitHub Actions para os servidores provisionados.
+
+
+### Endpoints
+
+- `POST /api/pessoas`  
+  Corpo:
+  ```json
+  {
+    "nome": "João",
+    "sobrenome": "Silva",
+    "email": "joao@email.com",
+    "cpf": "12345678900"
+  }
+  ```
+
+- `GET /api/pessoas/{cpf}`  
+  Resposta:
+  ```json
+  {
+    "id": "...",
+    "nome": "João",
+    "sobrenome": "Silva",
+    "email": "joao@email.com",
+    "cpf": "12345678900"
+  }
+  ```
+
 
 ### Infraestrutura
-- **Cloud Provider**: DigitalOcean
-  - Load Balancer com terminação SSL
-  - Rede VPC privada
-  - Alta disponibilidade com múltiplos droplets
-  - Configuração automatizada do MongoDB
-  - Runner self-hosted do GitHub Actions
 
-### Pipeline CI/CD
-- Builds e deploys automatizados usando GitHub Actions
-- Deploys sem downtime
-- Gerenciamento de artefatos
-- Suporte a múltiplos ambientes
+- **Terraform:**  
+  Provisiona VPC, Droplets (app, MongoDB, GHA runner), Load Balancer, DNS, Firewalls na DigitalOcean.
 
-## Estrutura do Projeto
-```
-├── compose.yaml
-├── configs
-│   └── db.go
-├── controllers
-│   └── personController.go
-├── diagramas
-│   ├── 2025-04-02-1618.excalidraw
-│   └── 2025-04-02-1618.excalidraw.png
-├── Dockerfile
-├── go.mod
-├── go.sum
-├── main.go
-├── models
-│   └── person.go
-├── nuke.sh
-├── README.md
-├── routes
-│   └── router.go
-└── terraform
-    ├── backend.tf
-    ├── dns_record.tf
-    ├── droplet_app.tf
-    ├── droplet_gha.tf
-    ├── droplet_mongo.tf
-    ├── firewall_app.tf
-    ├── firewall_gha.tf
-    ├── firewall_mongo.tf
-    ├── gha.sh
-    ├── loadbalancer.tf
-    ├── locals.tf
-    ├── mongo.sh
-    ├── myapp.sh
-    ├── network.tf
-    ├── outputs.tf
-    ├── provider.tf
-    ├── ssh_key.tf
-    ├── terraform.tfvars
-    └── variables.tf
-```
+- **Ansible:**  
+  Instala MongoDB, configura serviço systemd para a aplicação Go.
 
-## Primeiros Passos
+- **GitHub Actions:**  
+  Builda o binário, faz upload como artefato e realiza deploy remoto via SSH nos servidores.
 
-### Pré-requisitos
-- Go 1.24 ou superior
-- Docker e Docker Compose
-- Terraform 1.x
-- Conta na DigitalOcean e token de API
 
-### Desenvolvimento Local
-1. Clone o repositório
-```bash
-git clone https://github.com/yourusername/golang-api.git
-```
+### Diagrama
 
-2. Inicie o ambiente de desenvolvimento
-```bash
-docker-compose up -d
-```
+O diagrama de arquitetura está disponível em 2025-04-02-1618.excalidraw.
 
-3. Rode a aplicação
-```bash
-go run main.go
-```
 
-### Deploy da Infraestrutura
-1. Configure as variáveis do Terraform
-```bash
-cp terraform.tfvars.example terraform.tfvars
-# Edite o terraform.tfvars com seus valores
-```
+### Observações
 
-2. Inicialize e aplique o Terraform
-```bash
-cd terraform
-terraform init
-terraform apply
-```
-
-## Contribuindo
-Por favor, leia o [CONTRIBUTING.md](CONTRIBUTING.md) para detalhes sobre nosso código de conduta e o processo de envio de pull requests.
-
-## Licença
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+- O endereço do MongoDB está configurado em db.go como `mongodb://10.0.20.4:27017`.
+- O deploy espera variáveis de ambiente e secrets configurados no GitHub para acesso SSH e caminhos de deploy.
+- O domínio público da API é configurado via DNS na DigitalOcean como `api.dellabeneta.tech`.
